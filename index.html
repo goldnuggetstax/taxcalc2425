@@ -56,7 +56,7 @@
 
         <div class="mb-6">
             <label for="paygInstalment" class="block text-gray-700 text-lg font-medium mb-2">
-                ภาษีที่ผ่อนชำระ (PAYG tax instalment) (AUD):
+                ภาษีบังคับจ่ายล่วงหน้า (PAYG tax instalment) (AUD):
             </label>
             <input
                 type="number"
@@ -78,7 +78,7 @@
         </div>
 
         <div class="mt-6 text-sm text-gray-500 text-center">
-            <p>ข้อจำกัดความรับผิดชอบ: เครื่องคำนวณนี้เป็นเพียงการประมาณการเท่านั้น โดยอิงตามอัตราภาษีสำหรับผู้มีถิ่นที่อยู่ในออสเตรเลียสำหรับปีภาษี 2024-2025 (รวมถึงการลดหย่อนภาษีระยะที่ 3) และการคำนวณภาษี Medicare Levy ขั้นพื้นฐาน **มีการพิจารณาค่าลดหย่อนที่คุณป้อน, Low-Income Tax Offset (LITO), ภาษีหัก ณ ที่จ่าย (PAYG tax withholding) และภาษีที่ผ่อนชำระ (PAYG tax instalment)** แต่ไม่ได้พิจารณาสถานการณ์ส่วนบุคคลทั้งหมด, การลดหย่อนภาษีเฉพาะประเภท, หรือกฎหมายภาษีที่ซับซ้อนอื่น ๆ โปรดปรึกษา <a href="https://www.facebook.com/goldnuggetsaccounting/" class="text-blue-600 hover:underline" target="_blank">ผู้เชี่ยวชาญด้านภาษี หรือสำนักงานบัญชี บัญชี ภาษี ออสซี่</a> เพื่อขอคำแนะนำส่วนบุคคล</p>
+            <p>ข้อจำกัดความรับผิดชอบ: เครื่องคำนวณนี้เป็นเพียงการประมาณการเท่านั้น โดยอิงตามอัตราภาษีสำหรับผู้มีถิ่นที่อยู่ในออสเตรเลียสำหรับปีภาษี 2024-2025 (รวมถึงการลดหย่อนภาษีระยะที่ 3) และการคำนวณภาษี Medicare Levy ขั้นพื้นฐาน **มีการพิจารณาค่าลดหย่อนที่คุณป้อน, Low-Income Tax Offset (LITO), ภาษีหัก ณ ที่จ่าย (PAYG tax withholding) และภาษีบังคับจ่ายล่วงหน้า (PAYG tax instalment)** แต่ไม่ได้พิจารณาสถานการณ์ส่วนบุคคลทั้งหมด, การลดหย่อนภาษีเฉพาะประเภท, หรือกฎหมายภาษีที่ซับซ้อนอื่น ๆ โปรดปรึกษา <a href="https://www.facebook.com/goldnuggetsaccounting/" class="text-blue-600 hover:underline" target="_blank">ผู้เชี่ยวชาญด้านภาษี หรือสำนักงานบัญชี บัญชี ภาษี ออสซี่</a> เพื่อขอคำแนะนำส่วนบุคคล</p>
         </div>
     </div>
 
@@ -139,7 +139,7 @@
                 return;
             }
             if (isNaN(paygInstalment) || paygInstalment < 0) {
-                resultDiv.innerHTML = "<p>โปรดป้อนตัวเลขที่เป็นบวกที่ถูกต้องสำหรับภาษีที่ผ่อนชำระ (PAYG tax instalment) ของคุณ</p>";
+                resultDiv.innerHTML = "<p>โปรดป้อนตัวเลขที่เป็นบวกที่ถูกต้องสำหรับภาษีบังคับจ่ายล่วงหน้า (PAYG tax instalment) ของคุณ</p>";
                 resultDiv.classList.remove('hidden');
                 resultDiv.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
                 return;
@@ -250,7 +250,7 @@
                     <li class="text-red-700">**บวก** ภาษี Medicare Levy: AUD ${formatCurrency(medicareLevy)}</li>
                     <li class="font-bold">ภาษีที่ต้องชำระทั้งหมด (ก่อนหัก PAYG): AUD ${formatCurrency(totalTaxLiability)}</li>
                     <li class="text-green-700">**หัก** ภาษีหัก ณ ที่จ่าย (PAYG withholding): AUD ${formatCurrency(paygWithholding)}</li>
-                    <li class="text-green-700">**หัก** ภาษีที่ผ่อนชำระ (PAYG instalment): AUD ${formatCurrency(paygInstalment)}</li>
+                    <li class="text-green-700">**หัก** ภาษีบังคับจ่ายล่วงหน้า (PAYG instalment): AUD ${formatCurrency(paygInstalment)}</li>
                     <li class="font-bold text-2xl mt-4">รวมภาษีที่ต้องชำระ / ได้รับคืน: AUD ${taxRefundOrOwing > 0 ? formatCurrency(taxRefundOrOwing) : formatCurrency(Math.abs(taxRefundOrOwing))} ${taxRefundOrOwing > 0 ? '(ได้รับคืน)' : (taxRefundOrOwing < 0 ? '(ต้องชำระเพิ่ม)' : '')}</li>
                 </ul>
             `;
