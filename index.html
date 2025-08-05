@@ -20,7 +20,7 @@
 
         <div class="mb-4">
             <label for="totalIncome" class="block text-gray-700 text-lg font-medium mb-2">
-                ป้อนรายได้รวมก่อนหักลดหย่อน (AUD):
+                ป้อนรายได้ที่ต้องเสียภาษี (AUD):
             </label>
             <input
                 type="number"
@@ -31,13 +31,13 @@
         </div>
 
         <div class="mb-4">
-            <label for="deductions" class="block text-gray-700 text-lg font-medium mb-2">
-                ป้อนค่าลดหย่อนทั้งหมด (AUD):
+            <label for="workRelatedExpenses" class="block text-gray-700 text-lg font-medium mb-2">
+                ค่าใช้จ่ายที่เกี่ยวข้องกับงาน (AUD):
             </label>
             <input
                 type="number"
-                id="deductions"
-                placeholder="เช่น 10000 (ถ้าไม่มีให้ป้อน 0)"
+                id="workRelatedExpenses"
+                placeholder="เช่น 5000 (ถ้าไม่มีให้ป้อน 0)"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
             />
         </div>
@@ -78,7 +78,7 @@
         </div>
 
         <div class="mt-6 text-sm text-gray-500 text-center">
-            <p>ข้อจำกัดความรับผิดชอบ: เครื่องคำนวณนี้เป็นเพียงการประมาณการเท่านั้น โดยอิงตามอัตราภาษีสำหรับผู้มีถิ่นที่อยู่ในออสเตรเลียสำหรับปีภาษี 2024-2025 (รวมถึงการลดหย่อนภาษีระยะที่ 3) และการคำนวณภาษี Medicare Levy ขั้นพื้นฐาน **มีการพิจารณาค่าลดหย่อนที่คุณป้อน, Low-Income Tax Offset (LITO), ภาษีหัก ณ ที่จ่าย (PAYG tax withholding) และภาษีบังคับจ่ายล่วงหน้า (PAYG tax instalment)** แต่ไม่ได้พิจารณาสถานการณ์ส่วนบุคคลทั้งหมด, การลดหย่อนภาษีเฉพาะประเภท, หรือกฎหมายภาษีที่ซับซ้อนอื่น ๆ โปรดปรึกษา <a href="https://www.facebook.com/goldnuggetsaccounting/" class="text-blue-600 hover:underline" target="_blank">ผู้เชี่ยวชาญด้านภาษี หรือสำนักงานบัญชี บัญชี ภาษี ออสซี่</a> เพื่อขอคำแนะนำส่วนบุคคล</p>
+            <p>ข้อจำกัดความรับผิดชอบ: เครื่องคำนวณนี้เป็นเพียงการประมาณการเท่านั้น โดยอิงตามอัตราภาษีสำหรับผู้มีถิ่นที่อยู่ในออสเตรเลียสำหรับปีภาษี 2024-2025 และการคำนวณภาษี Medicare Levy ขั้นพื้นฐาน **มีการพิจารณาค่าใช้จ่ายที่เกี่ยวข้องกับงาน, Low-Income Tax Offset (LITO), ภาษีหัก ณ ที่จ่าย (PAYG tax withholding) และภาษีบังคับจ่ายล่วงหน้า (PAYG tax instalment)** แต่ไม่ได้พิจารณาสถานการณ์ส่วนบุคคลทั้งหมด, การลดหย่อนภาษีเฉพาะประเภท, หรือกฎหมายภาษีที่ซับซ้อนอื่น ๆ โปรดปรึกษา <a href="https://www.facebook.com/goldnuggetsaccounting/" class="text-blue-600 hover:underline" target="_blank">ผู้เชี่ยวชาญด้านภาษี หรือสำนักงานบัญชี บัญชี ภาษี ออสซี่</a> เพื่อขอคำแนะนำส่วนบุคคล</p>
         </div>
     </div>
 
@@ -94,7 +94,7 @@
 
         /**
          * Calculates the estimated tax payable based on Australian tax rates.
-         * This function retrieves the total income, deductions, PAYG withholding, and PAYG instalment from the input fields,
+         * This function retrieves the total income, work-related expenses, PAYG withholding, and PAYG instalment from the input fields,
          * calculates the taxable income, validates inputs, and then applies the progressive tax rates,
          * Low-Income Tax Offset (LITO), and Medicare Levy for Australian residents for the 2024-2025 income year.
          * Finally, it determines the tax refund or amount owing.
@@ -103,12 +103,12 @@
         function calculateTax() {
             // Get the input elements and their values
             const totalIncomeInput = document.getElementById('totalIncome');
-            const deductionsInput = document.getElementById('deductions');
+            const workRelatedExpensesInput = document.getElementById('workRelatedExpenses'); // New input field
             const paygWithholdingInput = document.getElementById('paygWithholding');
             const paygInstalmentInput = document.getElementById('paygInstalment');
             
             let totalIncome = parseFloat(totalIncomeInput.value);
-            let deductions = parseFloat(deductionsInput.value);
+            let workRelatedExpenses = parseFloat(workRelatedExpensesInput.value); // Get value for new field
             let paygWithholding = parseFloat(paygWithholdingInput.value);
             let paygInstalment = parseFloat(paygInstalmentInput.value);
 
@@ -121,13 +121,13 @@
 
             // --- Input Validation ---
             if (isNaN(totalIncome) || totalIncome < 0) {
-                resultDiv.innerHTML = "<p>โปรดป้อนตัวเลขที่เป็นบวกที่ถูกต้องสำหรับรายได้รวมของคุณ</p>";
+                resultDiv.innerHTML = "<p>โปรดป้อนตัวเลขที่เป็นบวกที่ถูกต้องสำหรับรายได้ที่ต้องเสียภาษีของคุณ</p>";
                 resultDiv.classList.remove('hidden');
                 resultDiv.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
                 return;
             }
-            if (isNaN(deductions) || deductions < 0) {
-                resultDiv.innerHTML = "<p>โปรดป้อนตัวเลขที่เป็นบวกที่ถูกต้องสำหรับค่าลดหย่อนของคุณ</p>";
+            if (isNaN(workRelatedExpenses) || workRelatedExpenses < 0) {
+                resultDiv.innerHTML = "<p>โปรดป้อนตัวเลขที่เป็นบวกที่ถูกต้องสำหรับค่าใช้จ่ายที่เกี่ยวข้องกับงานของคุณ</p>";
                 resultDiv.classList.remove('hidden');
                 resultDiv.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
                 return;
@@ -145,8 +145,8 @@
                 return;
             }
 
-            // Calculate actual taxable income after deductions
-            let taxableIncome = totalIncome - deductions;
+            // Calculate actual taxable income after work-related expenses
+            let taxableIncome = totalIncome - workRelatedExpenses; // Updated calculation
             if (taxableIncome < 0) {
                 taxableIncome = 0; // Taxable income cannot be negative
             }
@@ -244,7 +244,7 @@
                 <p class="text-4xl font-extrabold ${finalResultClass} mb-4">${finalResultText}</p>
                 <p class="text-xl mb-2">รายละเอียด:</p>
                 <ul class="list-disc list-inside text-left mx-auto max-w-xs space-y-1">
-                    <li>รายได้ที่ต้องเสียภาษี (หลังหักลดหย่อน): AUD ${formatCurrency(taxableIncome)}</li>
+                    <li>รายได้ที่ต้องเสียภาษี (หลังหักค่าใช้จ่ายที่เกี่ยวข้องกับงาน): AUD ${formatCurrency(taxableIncome)}</li>
                     <li class="text-red-700">ภาษีเงินได้ที่คำนวณตามขั้นบันได: AUD ${formatCurrency(grossTaxPayableBeforeLITO)}</li>
                     <li class="text-green-700">**หัก** Low-Income Tax Offset (LITO): AUD ${formatCurrency(lowIncomeTaxOffset)}</li>
                     <li class="text-red-700">**บวก** ภาษี Medicare Levy: AUD ${formatCurrency(medicareLevy)}</li>
